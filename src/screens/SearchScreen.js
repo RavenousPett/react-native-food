@@ -10,12 +10,14 @@ const SearchScreen = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const searchApi = async () => {
+  const searchApi = async (searchTerm) => {
+    console.log('hi there');
+
     try {
       const response = await yelp.get('/search', {
         params: {
           limit: 50,
-          term,
+          term: searchTerm,
           location: 'san jose'
         }
       });
@@ -26,11 +28,14 @@ const SearchScreen = () => {
     }
   }
 
+  // Call searchApi when component is first rendered. BAD CODE!
+  searchApi('pasta');
+
   return <View>
     <SearchBar
       term={term}
       onTermChange={setTerm}
-      onTermSubmit={searchApi}
+      onTermSubmit={() => searchApi(term)}
     />
     {errorMessage ? <Text>{errorMessage}</Text> : null}
     <Text>We have found {results.length} results</Text>
